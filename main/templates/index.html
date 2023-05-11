@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/index.css" />
+  </head>
+  <body>
+    <h1 class="title">메인 페이지</h1><br>
+
+    <div class="main-tools">
+      {% if user.is_authenticated %}
+      <a href="{% url 'user:signout' %}">로그아웃</a> <br>
+      <a href="{% url 'article:new' %}">글 작성</a>
+      {% else %}
+      <a href="{% url 'user:signin' %}">로그인</a> <br>
+      <a href="{% url 'user:signup' %}">회원가입</a>
+      {% endif %}
+    </div>  
+
+    <hr>
+
+    <div style="display:flex;justify-content:center;align-items: center;flex-direction:column;">
+      {% for article in articles %}
+      <div class="comment-box">
+        <span class="title">{{ article.title}}</span>
+        <span class="author">{{article.author.username}}</span>
+        <div class="content">{{article.content}}</div>
+        <div class="comment-tool">
+          <a href="{% url 'article:edit' id=article.id %}">글 수정</a>
+          <a href="{% url 'article:destroy' id=article.id %}">글 삭제</a>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </body>
+</html>
